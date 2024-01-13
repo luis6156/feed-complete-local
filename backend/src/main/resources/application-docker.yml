@@ -1,0 +1,18 @@
+server:
+  port: 9229
+spring:
+  datasource:
+    username: postgres
+    password: password
+    url: jdbc:postgresql://database:5432/database
+  batch:
+    jdbc:
+      initialize-schema: always
+  jpa:
+    hibernate:
+      ddl-auto: update
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
+    username: username
+    password: password

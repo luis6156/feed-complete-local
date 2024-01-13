@@ -1,0 +1,63 @@
+<div class="flex flex-col items-center mt-10">
+  <h1><strong>Login</strong></h1>
+  <div class="flex flex-col mt-10 w-[100%] items-center">
+    <form
+      [formGroup]="loginForm"
+      class="w-[60%]"
+      (ngSubmit)="signInWithEmailAndPass()"
+    >
+      <input
+        formControlName="email"
+        class="w-full"
+        hlmInput
+        placeholder="Email"
+        type="email"
+      />
+      <input
+        formControlName="password"
+        class="w-full mt-5"
+        hlmInput
+        placeholder="Password"
+        type="password"
+      />
+
+      <div class="w-full mt-5">
+        <a class="underline" href="www.google.com">Forgot Password?</a>
+      </div>
+
+      @if (error != '') {
+        <div class="w-full mt-5">
+          <p class="text-red-500">{{ error }}</p>
+        </div>
+      }
+
+      <button type="submit" class="mt-5 w-full" hlmBtn>Sign In</button>
+    </form>
+
+    <div class="flex flex-row mt-5 w-[60%]">
+      <p>Don't have an account?</p>
+      <a class="underline ms-1" [routerLink]="['/register']">Sign Up</a>
+    </div>
+
+    <div class="flex flex-row justify-between items-center mt-5 w-[60%]">
+      <hr class="w-full mt-1" />
+      <p class="mx-3">or</p>
+      <hr class="w-full mt-1" />
+    </div>
+
+    <button
+      class="mt-7 items-center w-[60%]"
+      hlmBtn
+      (click)="signInWithGoogle()"
+    >
+      <img
+        src="assets/images/google-logo.webp"
+        alt="google"
+        class="mr-3"
+        height="20px"
+        width="20px"
+      />
+      Sign In With Google
+    </button>
+  </div>
+</div>

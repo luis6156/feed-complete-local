@@ -1,0 +1,61 @@
+version: '3.9'
+
+services:
+  database:
+    container_name: postgresql
+    image: postgres:latest
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=database
+      - POSTGRES_PASSWORD=password
+    ports:
+      - "5432:5432"
+    networks:
+      - backend
+  
+  rabbitmq:
+    container_name: rabbitmq
+    image: "rabbitmq:3-management"
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: username
+      RABBITMQ_DEFAULT_PASS: password
+    networks:
+      - backend
+  
+  backend:
+    container_name: maven-springboot-run
+    image: maven:3.8.4-openjdk-17-slim
+    ports:
+      - "9229:9229"
+    volumes:
+      - ./backend:/backend
+    working_dir: /backend
+    command: "mvn spring-boot:run -Dspring-boot.run.profiles=docker"
+    depends_on:
+      - database
+      - rabbitmq
+    networks:
+      - backend
+
+  frontend:
+    image: node:20.10
+    container_name: node-frontend
+    restart: always
+    command: bash -c "
+      (
+        cd frontend;
+        npm i &&
+        npx ng serve --host 0.0.0.0;
+      )"
+    ports:
+      - "4200:4200"
+    volumes:
+      - ./frontend:/frontend
+    networks:
+      - backend
+
+networks:
+  backend:
